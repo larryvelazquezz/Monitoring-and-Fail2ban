@@ -1,0 +1,29 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager/config.yml:/etc/alertmanager/config.yml
+    ports:
+      - "9093:9093"
+
+  fail2ban:
+    image: crazymax/fail2ban:latest
+    container_name: fail2ban
+    volumes:
+      - /home/larry/project/fail2ban/action.d/prometheus-ban.conf:/etc/fail2ban/action.d/prometheus-ban.conf
+      - ./fail2ban/jail.local:/etc/fail2ban/jail.local
+      - ./fail2ban/action.d/prometheus-ban.conf:/etc/fail2ban/action.d/prometheus-ban.conf
+      - ./logs:/var/log
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+

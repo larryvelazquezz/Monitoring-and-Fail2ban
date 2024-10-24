@@ -1,0 +1,17 @@
+[sshd]
+enabled = true
+port    = ssh
+filter  = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+findtime = 600
+bantime = 600
+
+[nginx-proxy-manager]
+enabled  = true
+filter   = nginx-proxy-manager
+action   = iptables[name=nginx-proxy-manager, port=http, protocol=tcp]
+logpath  = /var/log/nginx/access.log
+maxretry = 3
+findtime = 600
+bantime  = 600
